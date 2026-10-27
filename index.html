@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matemática Financeira — Juros Simples e Descontos</title>
+<meta name="description" content="Vídeos, slides e resumo de fórmulas de Juros Simples e Descontos Simples.">
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --text: #1c2430;
+    --muted: #5b6676;
+    --accent: #1f4e79;
+    --accent-soft: #e6eef6;
+    --border: #d9dee5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161c;
+      --surface: #1b212a;
+      --text: #e8ecf1;
+      --muted: #9aa5b4;
+      --accent: #7fb2e5;
+      --accent-soft: #223244;
+      --border: #2c3542;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+  header { padding: 40px 0 24px; border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--accent); }
+  header p { margin: 0; color: var(--muted); max-width: 60ch; }
+  nav { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+  nav a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  nav a:hover { text-decoration: underline; }
+  section { padding: 32px 0 8px; }
+  h2 { font-size: 1.4rem; margin: 0 0 16px; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .play {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .play:hover .icon { transform: scale(1.08); }
+  .play:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--accent); color: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; transition: transform .15s;
+  }
+  .soon { color: var(--muted); font-weight: 600; }
+  .body { padding: 14px 16px 16px; }
+  .body .num { font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .body h3 { margin: 2px 0 6px; font-size: 1.1rem; }
+  .body p { margin: 0 0 8px; color: var(--muted); font-size: .95rem; }
+  .body a { color: var(--accent); font-size: .9rem; }
+  ul.files { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  ul.files li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  ul.files a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  ul.files a:hover { text-decoration: underline; }
+  ul.files span { color: var(--muted); font-size: .95rem; }
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: .95rem;
+  }
+  th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: 0; }
+  .f { font-family: "Cambria Math", "STIX Two Math", Georgia, serif; white-space: nowrap; }
+  .note {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 16px;
+  }
+  footer { margin-top: 40px; padding: 20px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Matemática Financeira</h1>
+    <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
+    <nav>
+      <a href="#videos">Vídeos</a>
+      <a href="#materiais">Materiais</a>
+      <a href="#formulas">Resumo de fórmulas</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="videos">
+    <h2>Vídeos</h2>
+    <div class="grid" id="video-grid"></div>
+  </section>
+
+  <section id="materiais">
+    <h2>Materiais</h2>
+    <ul class="files">
+      <li><a href="materiais/Aula-01-Juros-Simples-1.pdf">Slides — Juros Simples I</a><span>conceitos, juro e montante</span></li>
+      <li><a href="materiais/Aula-02-Juros-Simples-2-Descontos-Simples.pdf">Slides — Juros Simples II e Descontos Simples</a><span>taxas, médias, desconto comercial e racional</span></li>
+      <li><a href="materiais/Revisao-Unidade-I.pdf">Revisão com exercícios resolvidos</a><span>mapa da unidade, erros comuns, 9 questões</span></li>
+    </ul>
+  </section>
+
+  <section id="formulas">
+    <h2>Resumo de fórmulas</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tema</th><th>Fórmula</th><th>Observação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Juro simples</td><td class="f">J = C · i · n</td><td>taxa e prazo na mesma unidade de tempo</td></tr>
+          <tr><td>Montante</td><td class="f">M = C · (1 + i · n)</td><td>M = C + J</td></tr>
+          <tr><td>Taxas proporcionais</td><td class="f">2% a.m. = 24% a.a.</td><td>vale no regime simples</td></tr>
+          <tr><td>Taxa média</td><td class="f">i<sub>m</sub> = Σ(C·i) / ΣC</td><td>média ponderada pelos capitais</td></tr>
+          <tr><td>Prazo médio</td><td class="f">n<sub>m</sub> = Σ(C·n) / ΣC</td><td>média ponderada pelos capitais</td></tr>
+          <tr><td>Desconto</td><td class="f">D = N − A</td><td>N: valor nominal; A: valor atual</td></tr>
+          <tr><td>Desconto comercial (por fora)</td><td class="f">D<sub>c</sub> = N · i · n<br>A<sub>c</sub> = N · (1 − i · n)</td><td>percentual incide sobre N</td></tr>
+          <tr><td>Desconto racional (por dentro)</td><td class="f">A<sub>r</sub> = N / (1 + i · n)<br>D<sub>r</sub> = N − A<sub>r</sub></td><td>percentual incide sobre A</td></tr>
+          <tr><td>Comparação</td><td class="f">D<sub>c</sub> = D<sub>r</sub> · (1 + i · n)</td><td>com mesma taxa e prazo, D<sub>c</sub> &gt; D<sub>r</sub></td></tr>
+          <tr><td>Taxa efetiva (desconto comercial)</td><td class="f">i<sub>ef</sub> = D<sub>c</sub> / A<sub>c</sub> = i·n / (1 − i·n)</td><td>sempre maior que i·n</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <strong>Pergunta que resolve muita questão:</strong> o percentual está sendo aplicado sobre qual valor?
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Material de apoio. Em caso de dúvida, consulte as referências da disciplina.
+  </div>
+</footer>
+
+<script>
+  // Para publicar um vídeo, cole o ID do YouTube (o trecho depois de "v=" ou "youtu.be/") em "id".
+  // Vídeos sem ID aparecem como "em breve".
+  var VIDEOS = [
+    { id: "", titulo: "Juros simples",
+      desc: "Capital, juro, taxa, prazo e montante; as fórmulas J = C·i·n e M = C(1 + i·n)." },
+    { id: "", titulo: "Taxas proporcionais, taxa média e prazo médio",
+      desc: "Como converter taxas no regime simples e por que taxa e prazo médios são médias ponderadas." },
+    { id: "", titulo: "Desconto comercial e desconto racional",
+      desc: "O que muda entre \"por fora\" e \"por dentro\" e por que o desconto comercial é sempre maior." },
+    { id: "", titulo: "Taxa efetiva do desconto comercial",
+      desc: "Por que a taxa realmente cobrada é maior que a taxa anunciada." }
+  ];
+
+  var grid = document.getElementById("video-grid");
+
+  VIDEOS.forEach(function (v, i) {
+    var card = document.createElement("article");
+    card.className = "card";
+
+    var player = document.createElement("div");
+    player.className = "player";
+
+    if (v.id) {
+      var btn = document.createElement("button");
+      btn.className = "play";
+      btn.type = "button";
+      btn.setAttribute("aria-label", "Reproduzir: " + v.titulo);
+      btn.innerHTML = '<span class="icon" aria-hidden="true">&#9654;</span>';
+      btn.addEventListener("click", function () {
+        var f = document.createElement("iframe");
+        f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(v.id) + "?autoplay=1&rel=0";
+        f.title = v.titulo;
+        f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+        f.allowFullscreen = true;
+        player.replaceChildren(f);
+      });
+      player.appendChild(btn);
+    } else {
+      var soon = document.createElement("span");
+      soon.className = "soon";
+      soon.textContent = "Em breve";
+      player.appendChild(soon);
+    }
+
+    var body = document.createElement("div");
+    body.className = "body";
+
+    var num = document.createElement("div");
+    num.className = "num";
+    num.textContent = "Vídeo " + (i + 1);
+
+    var h3 = document.createElement("h3");
+    h3.textContent = v.titulo;
+
+    var p = document.createElement("p");
+    p.textContent = v.desc;
+
+    body.append(num, h3, p);
+
+    if (v.id) {
+      var a = document.createElement("a");
+      a.href = "https://www.youtube.com/watch?v=" + encodeURIComponent(v.id);
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = "Abrir no YouTube";
+      body.appendChild(a);
+    }
+
+    card.append(player, body);
+    grid.appendChild(card);
+  });
+</script>
+
+</body>
+</html>
