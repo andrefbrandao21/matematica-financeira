@@ -76,7 +76,15 @@
     border: 1px solid var(--border);
     margin-bottom: 24px;
   }
-  .hero-content { position: relative; z-index: 1; }
+  .hero-content { position: relative; z-index: 1; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .hero-logo {
+    flex-shrink: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+  .hero-logo img { display: block; height: 64px; width: auto; }
   .hero-icons { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
   .float-icon {
     position: absolute;
@@ -102,30 +110,6 @@
   .i6 { top: 10%; left: 56%; font-size: 1.6rem; animation-duration: 15s; animation-delay: .8s; }
   .i7 { top: 78%; left: 38%; font-size: 1.9rem; animation-duration: 17s; animation-delay: 2.5s; }
   .i8 { top: 4%;  left: 70%; font-size: 1.3rem; animation-duration: 11s; animation-delay: .3s; }
-  .campus-grid {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-  .campus-grid figure {
-    margin: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .campus-grid img { width: 100%; height: 180px; object-fit: cover; display: block; }
-  .campus-grid figcaption {
-    padding: 10px 14px;
-    font-size: .85rem;
-    color: var(--muted);
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .campus-grid figcaption strong { color: var(--text); }
-  .campus-grid figcaption span { font-size: .78rem; }
   h2 { font-size: 1.4rem; margin: 0 0 16px; }
   .secao ul.files + h2 { margin-top: 28px; }
   .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
@@ -282,21 +266,15 @@
         <span class="float-icon i8 gold">R$</span>
       </div>
       <div class="hero-content">
-        <h1>Matemática Financeira</h1>
-        <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
-        <p>Use o menu acima para navegar entre vídeos, materiais, fórmulas e a calculadora de amortização.</p>
+        <div class="hero-logo">
+          <img src="img/logo-campus4.png" alt="UFPB Campus IV — Rio Tinto e Mamanguape">
+        </div>
+        <div>
+          <h1>Matemática Financeira</h1>
+          <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
+          <p>Use o menu acima para navegar entre vídeos, materiais, fórmulas e a calculadora de amortização.</p>
+        </div>
       </div>
-    </div>
-
-    <div class="campus-grid">
-      <figure>
-        <img src="img/campus4-rio-tinto.jpg" alt="Entrada do CCAE, Campus IV da UFPB, em Rio Tinto (PB)">
-        <figcaption><strong>Campus IV — Rio Tinto</strong><span>Foto: Oriel Farias / UFPB</span></figcaption>
-      </figure>
-      <figure>
-        <img src="img/campus4-mamanguape.jpg" alt="Fachada do CCAE, Campus IV da UFPB, em Mamanguape (PB)">
-        <figcaption><strong>Campus IV — Mamanguape</strong><span>Foto: Aline Lins / UFPB</span></figcaption>
-      </figure>
     </div>
   </section>
 
