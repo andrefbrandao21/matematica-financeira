@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Matemática Financeira — Juros Simples e Descontos</title>
-<meta name="description" content="Vídeos, slides e resumo de fórmulas de Juros Simples e Descontos Simples.">
+<title>Matemática Financeira — Material de Apoio</title>
+<meta name="description" content="Vídeos, slides, resumo de fórmulas e uma calculadora de financiamentos (SAC x Price) para estudar Matemática Financeira no seu ritmo.">
 <script data-goatcounter="https://matfin-ccae.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
   :root {
@@ -85,6 +85,39 @@
     box-shadow: 0 1px 4px rgba(0,0,0,.1);
   }
   .hero-logo img { display: block; height: 64px; width: auto; }
+  .features {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-top: 24px;
+  }
+  .feature-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 16px;
+    transition: border-color .15s, transform .15s;
+  }
+  .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+    font-family: "Cambria Math", "STIX Two Math", Georgia, serif;
+    margin-bottom: 10px;
+  }
+  .feature-card h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--text); }
+  .feature-card p { margin: 0; color: var(--muted); font-size: .9rem; }
   .hero-icons { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
   .float-icon {
     position: absolute;
@@ -248,7 +281,7 @@
   <a onclick="mostrarSecao('inicio')" id="nav-inicio">Início</a>
   <a onclick="mostrarSecao('videos')" id="nav-videos">Vídeos</a>
   <a onclick="mostrarSecao('materiais')" id="nav-materiais">Materiais e fórmulas</a>
-  <a onclick="mostrarSecao('calculadora')" id="nav-calculadora">Calculadora SAC x Price</a>
+  <a onclick="mostrarSecao('calculadora')" id="nav-calculadora">Calculadora de Financiamentos</a>
 </div>
 
 <main class="wrap">
@@ -271,10 +304,28 @@
         </div>
         <div>
           <h1>Matemática Financeira</h1>
-          <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
-          <p>Use o menu acima para navegar entre vídeos, materiais, fórmulas e a calculadora de amortização.</p>
+          <p>Material de apoio para estudar Matemática Financeira no seu próprio ritmo — pensado para quem cursa a disciplina em Administração, Ciências Contábeis ou Licenciatura em Matemática.</p>
+          <p>Vídeos curtos direto ao ponto, um resumo rápido das fórmulas pra consultar antes da prova, e uma calculadora de financiamentos pra simular SAC e Price com os seus próprios números.</p>
         </div>
       </div>
+    </div>
+
+    <div class="features">
+      <a class="feature-card" onclick="mostrarSecao('videos')">
+        <span class="feature-icon">▶</span>
+        <h3>Vídeos curtos</h3>
+        <p>Explicações objetivas pra rever um conceito específico, sem precisar assistir a aula inteira de novo.</p>
+      </a>
+      <a class="feature-card" onclick="mostrarSecao('materiais')">
+        <span class="feature-icon">Σ</span>
+        <h3>Materiais e fórmulas</h3>
+        <p>Slides das aulas e um resumo com todas as fórmulas de juros e descontos, pra consultar antes da prova.</p>
+      </a>
+      <a class="feature-card" onclick="mostrarSecao('calculadora')">
+        <span class="feature-icon">R$</span>
+        <h3>Calculadora de financiamentos</h3>
+        <p>Simule SAC e Price com seus próprios números e veja a tabela de amortização completa, mês a mês.</p>
+      </a>
     </div>
   </section>
 
@@ -317,7 +368,7 @@
   </section>
 
   <section id="sec-calculadora" class="secao">
-    <h2>Calculadora de amortização (SAC x Price)</h2>
+    <h2>Calculadora de financiamentos (SAC x Price)</h2>
     <p>Informe o capital financiado, a taxa de juros do período e o número de parcelas, escolha o sistema e veja a tabela completa, mês a mês — a mesma lógica usada em sala.</p>
     <form id="calc-form" class="calc-form">
       <div class="field">
