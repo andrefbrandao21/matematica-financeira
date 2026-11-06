@@ -36,22 +36,34 @@
     line-height: 1.55;
   }
   .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
-  .block {
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px 24px;
-    margin: 24px 0;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
   }
-  main.wrap { padding-top: 24px; padding-bottom: 24px; }
-  header.block h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--accent); }
-  header.block p { margin: 0; color: var(--muted); max-width: 60ch; }
-  nav { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
-  nav a { color: var(--accent); text-decoration: none; font-weight: 600; }
-  nav a:hover { text-decoration: underline; }
-  .block + .block { margin-top: 24px; }
+  .nav-bar a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 2px 6px;
+    border-bottom: 2px solid transparent;
+  }
+  .nav-bar a:hover { color: var(--accent); }
+  .nav-bar a.current { color: var(--accent); border-bottom-color: var(--accent); }
+  main.wrap { padding-top: 28px; padding-bottom: 28px; }
+  .secao { display: none; }
+  .secao.ativa { display: block; }
+  #sec-inicio h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--accent); }
+  #sec-inicio p { margin: 0 0 8px; color: var(--muted); max-width: 60ch; }
   h2 { font-size: 1.4rem; margin: 0 0 16px; }
-  .block ul.files + h2 { margin-top: 28px; }
+  .secao ul.files + h2 { margin-top: 28px; }
   .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
   .card {
     background: var(--surface);
@@ -184,24 +196,27 @@
 </head>
 <body>
 
+<div class="nav-bar">
+  <a onclick="mostrarSecao('inicio')" id="nav-inicio">Início</a>
+  <a onclick="mostrarSecao('videos')" id="nav-videos">Vídeos</a>
+  <a onclick="mostrarSecao('materiais')" id="nav-materiais">Materiais e fórmulas</a>
+  <a onclick="mostrarSecao('calculadora')" id="nav-calculadora">Calculadora SAC x Price</a>
+</div>
+
 <main class="wrap">
 
-  <header class="block">
+  <section id="sec-inicio" class="secao">
     <h1>Matemática Financeira</h1>
     <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
-    <nav>
-      <a href="#videos">Vídeos</a>
-      <a href="#materiais">Materiais e fórmulas</a>
-      <a href="#calculadora">Calculadora SAC x Price</a>
-    </nav>
-  </header>
+    <p>Use o menu acima para navegar entre vídeos, materiais, fórmulas e a calculadora de amortização.</p>
+  </section>
 
-  <section id="videos" class="block">
+  <section id="sec-videos" class="secao">
     <h2>Vídeos</h2>
     <div class="grid" id="video-grid"></div>
   </section>
 
-  <section id="materiais" class="block">
+  <section id="sec-materiais" class="secao">
     <h2>Materiais</h2>
     <ul class="files">
       <li><a href="materiais/Aula-01-Juros-Simples-1.pdf">Slides — Juros Simples I</a><span>conceitos, juro e montante</span></li>
@@ -234,7 +249,7 @@
     </div>
   </section>
 
-  <section id="calculadora" class="block">
+  <section id="sec-calculadora" class="secao">
     <h2>Calculadora de amortização (SAC x Price)</h2>
     <p>Informe o capital financiado, a taxa de juros do período e o número de parcelas, escolha o sistema e veja a tabela completa, mês a mês — a mesma lógica usada em sala.</p>
     <form id="calc-form" class="calc-form">
@@ -274,6 +289,28 @@
     Material de apoio. Em caso de dúvida, consulte as referências da disciplina.
   </div>
 </footer>
+
+<script>
+  // Navegação por seções (uma "aba" visível por vez, sem rolagem contínua).
+  function mostrarSecao(nome) {
+    document.querySelectorAll(".secao").forEach(function (el) { el.classList.remove("ativa"); });
+    var sec = document.getElementById("sec-" + nome);
+    if (sec) { sec.classList.add("ativa"); }
+
+    document.querySelectorAll(".nav-bar a").forEach(function (a) { a.classList.remove("current"); });
+    var link = document.getElementById("nav-" + nome);
+    if (link) { link.classList.add("current"); }
+
+    window.scrollTo(0, 0);
+    if (history.replaceState) { history.replaceState(null, "", "#" + nome); }
+  }
+
+  (function () {
+    var validas = ["inicio", "videos", "materiais", "calculadora"];
+    var hash = (location.hash || "").replace("#", "");
+    mostrarSecao(validas.indexOf(hash) !== -1 ? hash : "inicio");
+  })();
+</script>
 
 <script>
   // Para publicar um vídeo, cole o ID do YouTube (o trecho depois de "v=" ou "youtu.be/") em "id".
