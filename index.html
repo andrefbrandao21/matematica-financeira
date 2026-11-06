@@ -77,6 +77,10 @@
     margin-bottom: 24px;
   }
   .hero-content { position: relative; z-index: 1; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .hero.compact { padding: 22px 24px 26px; margin-bottom: 24px; }
+  .hero-text { position: relative; z-index: 1; }
+  .hero.compact h2 { margin: 0 0 8px; color: var(--accent); }
+  .hero.compact .lead { margin: 0; }
   .hero-logo {
     flex-shrink: 0;
     background: #ffffff;
@@ -331,14 +335,38 @@
   </section>
 
   <section id="sec-videos" class="secao">
-    <h2>Vídeos</h2>
-    <p class="lead">Vídeos curtos, direto ao ponto — cada um fecha um conceito específico, pra rever antes da prova ou tirar uma dúvida pontual sem assistir a aula inteira de novo.</p>
+    <div class="hero compact">
+      <div class="hero-icons" aria-hidden="true">
+        <span class="float-icon i1">▶</span>
+        <span class="float-icon i2 gold">%</span>
+        <span class="float-icon i3">Σ</span>
+        <span class="float-icon i4 gold">R$</span>
+        <span class="float-icon i5">π</span>
+        <span class="float-icon i6 gold">√</span>
+      </div>
+      <div class="hero-text">
+        <h2>Vídeos</h2>
+        <p class="lead">Vídeos curtos, direto ao ponto — cada um fecha um conceito específico, pra rever antes da prova ou tirar uma dúvida pontual sem assistir a aula inteira de novo.</p>
+      </div>
+    </div>
     <div class="grid" id="video-grid"></div>
   </section>
 
   <section id="sec-materiais" class="secao">
-    <h2>Materiais</h2>
-    <p class="lead">Slides das aulas em PDF e, logo abaixo, um resumo com todas as fórmulas de juros e descontos simples — útil pra ter por perto enquanto resolve exercícios.</p>
+    <div class="hero compact">
+      <div class="hero-icons" aria-hidden="true">
+        <span class="float-icon i1">Σ</span>
+        <span class="float-icon i2 gold">%</span>
+        <span class="float-icon i3">√</span>
+        <span class="float-icon i4 gold">π</span>
+        <span class="float-icon i5">∫</span>
+        <span class="float-icon i6 gold">R$</span>
+      </div>
+      <div class="hero-text">
+        <h2>Materiais</h2>
+        <p class="lead">Slides das aulas em PDF e, logo abaixo, um resumo com todas as fórmulas de juros e descontos simples — útil pra ter por perto enquanto resolve exercícios.</p>
+      </div>
+    </div>
     <ul class="files">
       <li><a href="materiais/Aula-01-Juros-Simples-1.pdf">Slides — Juros Simples I</a><span>conceitos, juro e montante</span></li>
       <li><a href="materiais/Aula-02-Juros-Simples-2-Descontos-Simples.pdf">Slides — Juros Simples II e Descontos Simples</a><span>taxas, médias, desconto comercial e racional</span></li>
@@ -371,8 +399,20 @@
   </section>
 
   <section id="sec-calculadora" class="secao">
-    <h2>Calculadora de financiamentos (SAC x Price)</h2>
-    <p class="lead">Depois de entender SAC e Price na teoria, simule com números reais e compare os dois sistemas lado a lado.</p>
+    <div class="hero compact">
+      <div class="hero-icons" aria-hidden="true">
+        <span class="float-icon i1">R$</span>
+        <span class="float-icon i2 gold">%</span>
+        <span class="float-icon i3">Σ</span>
+        <span class="float-icon i4 gold">√</span>
+        <span class="float-icon i5">π</span>
+        <span class="float-icon i6 gold">∫</span>
+      </div>
+      <div class="hero-text">
+        <h2>Calculadora de financiamentos (SAC x Price)</h2>
+        <p class="lead">Depois de entender SAC e Price na teoria, simule com números reais e compare os dois sistemas lado a lado.</p>
+      </div>
+    </div>
     <p>Informe o capital financiado, a taxa de juros do período e o número de parcelas, escolha o sistema e veja a tabela completa, mês a mês — a mesma lógica usada em sala.</p>
     <form id="calc-form" class="calc-form">
       <div class="field">
