@@ -8,22 +8,27 @@
 <script data-goatcounter="https://matfin-ccae.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
   :root {
-    --bg: #f7f8fa;
+    /* Paleta UFPB: azul institucional (do brasão oficial) + dourado de acento */
+    --bg: #f5f7fb;
     --surface: #ffffff;
     --text: #1c2430;
     --muted: #5b6676;
-    --accent: #1f4e79;
-    --accent-soft: #e6eef6;
+    --accent: #234ea2;
+    --accent-soft: #e5ecf9;
+    --gold: #e8a93d;
+    --gold-soft: #fbead0;
     --border: #d9dee5;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #12161c;
-      --surface: #1b212a;
+      --bg: #11151c;
+      --surface: #1a212c;
       --text: #e8ecf1;
       --muted: #9aa5b4;
-      --accent: #7fb2e5;
-      --accent-soft: #223244;
+      --accent: #6886c0;
+      --accent-soft: #223049;
+      --gold: #f0c06a;
+      --gold-soft: #332a16;
       --border: #2c3542;
     }
   }
@@ -40,28 +45,87 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
+    background: var(--accent);
+    border-bottom: 3px solid var(--gold);
     padding: 14px 16px;
     display: flex;
     gap: 22px;
     flex-wrap: wrap;
   }
   .nav-bar a {
-    color: var(--muted);
+    color: #dce6f7;
     text-decoration: none;
     font-weight: 600;
     cursor: pointer;
     padding: 2px 2px 6px;
     border-bottom: 2px solid transparent;
   }
-  .nav-bar a:hover { color: var(--accent); }
-  .nav-bar a.current { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-bar a:hover { color: #ffffff; }
+  .nav-bar a.current { color: #ffffff; border-bottom-color: var(--gold); }
   main.wrap { padding-top: 28px; padding-bottom: 28px; }
   .secao { display: none; }
   .secao.ativa { display: block; }
   #sec-inicio h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--accent); }
   #sec-inicio p { margin: 0 0 8px; color: var(--muted); max-width: 60ch; }
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 40px 24px 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-soft), var(--surface) 70%);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-icons { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .float-icon {
+    position: absolute;
+    font-family: "Cambria Math", "STIX Two Math", Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: .16;
+    animation: flutuar ease-in-out infinite;
+  }
+  .float-icon.gold { color: var(--gold); }
+  @keyframes flutuar {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(8deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .float-icon { animation: none; }
+  }
+  .i1 { top: 8%;  left: 5%;  font-size: 2.1rem; animation-duration: 12s; }
+  .i2 { top: 62%; left: 9%;  font-size: 1.5rem; animation-duration: 16s; animation-delay: 1s; }
+  .i3 { top: 14%; left: 84%; font-size: 2.5rem; animation-duration: 14s; animation-delay: .5s; }
+  .i4 { top: 68%; left: 80%; font-size: 1.8rem; animation-duration: 18s; animation-delay: 2s; }
+  .i5 { top: 42%; left: 46%; font-size: 1.3rem; animation-duration: 13s; animation-delay: 1.5s; }
+  .i6 { top: 10%; left: 56%; font-size: 1.6rem; animation-duration: 15s; animation-delay: .8s; }
+  .i7 { top: 78%; left: 38%; font-size: 1.9rem; animation-duration: 17s; animation-delay: 2.5s; }
+  .i8 { top: 4%;  left: 70%; font-size: 1.3rem; animation-duration: 11s; animation-delay: .3s; }
+  .campus-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  .campus-grid figure {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .campus-grid img { width: 100%; height: 180px; object-fit: cover; display: block; }
+  .campus-grid figcaption {
+    padding: 10px 14px;
+    font-size: .85rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .campus-grid figcaption strong { color: var(--text); }
+  .campus-grid figcaption span { font-size: .78rem; }
   h2 { font-size: 1.4rem; margin: 0 0 16px; }
   .secao ul.files + h2 { margin-top: 28px; }
   .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
@@ -206,9 +270,34 @@
 <main class="wrap">
 
   <section id="sec-inicio" class="secao">
-    <h1>Matemática Financeira</h1>
-    <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
-    <p>Use o menu acima para navegar entre vídeos, materiais, fórmulas e a calculadora de amortização.</p>
+    <div class="hero">
+      <div class="hero-icons" aria-hidden="true">
+        <span class="float-icon i1">%</span>
+        <span class="float-icon i2 gold">R$</span>
+        <span class="float-icon i3">Σ</span>
+        <span class="float-icon i4 gold">π</span>
+        <span class="float-icon i5">√</span>
+        <span class="float-icon i6 gold">∫</span>
+        <span class="float-icon i7">%</span>
+        <span class="float-icon i8 gold">R$</span>
+      </div>
+      <div class="hero-content">
+        <h1>Matemática Financeira</h1>
+        <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
+        <p>Use o menu acima para navegar entre vídeos, materiais, fórmulas e a calculadora de amortização.</p>
+      </div>
+    </div>
+
+    <div class="campus-grid">
+      <figure>
+        <img src="img/campus4-rio-tinto.jpg" alt="Entrada do CCAE, Campus IV da UFPB, em Rio Tinto (PB)">
+        <figcaption><strong>Campus IV — Rio Tinto</strong><span>Foto: Oriel Farias / UFPB</span></figcaption>
+      </figure>
+      <figure>
+        <img src="img/campus4-mamanguape.jpg" alt="Fachada do CCAE, Campus IV da UFPB, em Mamanguape (PB)">
+        <figcaption><strong>Campus IV — Mamanguape</strong><span>Foto: Aline Lins / UFPB</span></figcaption>
+      </figure>
+    </div>
   </section>
 
   <section id="sec-videos" class="secao">
