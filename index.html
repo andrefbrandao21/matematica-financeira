@@ -35,14 +35,22 @@
     line-height: 1.55;
   }
   .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
-  header { padding: 40px 0 24px; border-bottom: 1px solid var(--border); }
-  header h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--accent); }
-  header p { margin: 0; color: var(--muted); max-width: 60ch; }
+  .block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 24px;
+    margin: 24px 0;
+  }
+  main.wrap { padding-top: 24px; padding-bottom: 24px; }
+  header.block h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--accent); }
+  header.block p { margin: 0; color: var(--muted); max-width: 60ch; }
   nav { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
   nav a { color: var(--accent); text-decoration: none; font-weight: 600; }
   nav a:hover { text-decoration: underline; }
-  section { padding: 32px 0 8px; }
+  .block + .block { margin-top: 24px; }
   h2 { font-size: 1.4rem; margin: 0 0 16px; }
+  .block ul.files + h2 { margin-top: 28px; }
   .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
   .card {
     background: var(--surface);
@@ -124,7 +132,7 @@
     padding: 12px 16px;
     margin-top: 16px;
   }
-  footer { margin-top: 40px; padding: 20px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .9rem; }
+  footer { margin-top: 16px; padding: 20px 0 40px; color: var(--muted); font-size: .9rem; }
   .calc-form {
     display: grid;
     gap: 12px;
@@ -175,37 +183,32 @@
 </head>
 <body>
 
-<header>
-  <div class="wrap">
+<main class="wrap">
+
+  <header class="block">
     <h1>Matemática Financeira</h1>
     <p>Juros simples e descontos simples: vídeos curtos, slides e um resumo das fórmulas para estudar no seu ritmo.</p>
     <nav>
       <a href="#videos">Vídeos</a>
-      <a href="#materiais">Materiais</a>
-      <a href="#formulas">Resumo de fórmulas</a>
+      <a href="#materiais">Materiais e fórmulas</a>
       <a href="#calculadora">Calculadora SAC x Price</a>
     </nav>
-  </div>
-</header>
+  </header>
 
-<main class="wrap">
-
-  <section id="videos">
+  <section id="videos" class="block">
     <h2>Vídeos</h2>
     <div class="grid" id="video-grid"></div>
   </section>
 
-  <section id="materiais">
+  <section id="materiais" class="block">
     <h2>Materiais</h2>
     <ul class="files">
       <li><a href="materiais/Aula-01-Juros-Simples-1.pdf">Slides — Juros Simples I</a><span>conceitos, juro e montante</span></li>
       <li><a href="materiais/Aula-02-Juros-Simples-2-Descontos-Simples.pdf">Slides — Juros Simples II e Descontos Simples</a><span>taxas, médias, desconto comercial e racional</span></li>
       <li><a href="materiais/Revisao-Unidade-I.pdf">Revisão com exercícios resolvidos</a><span>mapa da unidade, erros comuns, 9 questões</span></li>
     </ul>
-  </section>
 
-  <section id="formulas">
-    <h2>Resumo de fórmulas</h2>
+    <h2 id="formulas">Resumo de fórmulas</h2>
     <div class="table-wrap">
       <table>
         <thead>
@@ -230,7 +233,7 @@
     </div>
   </section>
 
-  <section id="calculadora">
+  <section id="calculadora" class="block">
     <h2>Calculadora de amortização (SAC x Price)</h2>
     <p>Informe o capital financiado, a taxa de juros do período e o número de parcelas, escolha o sistema e veja a tabela completa, mês a mês — a mesma lógica usada em sala.</p>
     <form id="calc-form" class="calc-form">
