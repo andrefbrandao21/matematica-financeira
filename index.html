@@ -125,6 +125,52 @@
     margin-top: 16px;
   }
   footer { margin-top: 40px; padding: 20px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .9rem; }
+  .calc-form {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    align-items: end;
+    margin-bottom: 16px;
+  }
+  .calc-form .field { display: flex; flex-direction: column; gap: 4px; }
+  .calc-form label { font-size: .85rem; color: var(--muted); font-weight: 600; }
+  .calc-form input, .calc-form select {
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+  }
+  .calc-form button {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: 10px 22px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--accent);
+    color: var(--surface);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .calc-form button:hover { opacity: .9; }
+  .calc-erro {
+    color: #b3261e;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .resumo {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    margin: 16px 0;
+  }
+  .resumo .item { background: var(--accent-soft); border-radius: 8px; padding: 12px 16px; }
+  .resumo .item .label { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+  .resumo .item .valor { font-size: 1.15rem; font-weight: 700; color: var(--accent); }
+  .resultado-bloco { margin-bottom: 28px; }
+  .resultado-bloco h3 { margin: 0 0 4px; font-size: 1.15rem; }
 </style>
 </head>
 <body>
@@ -137,6 +183,7 @@
       <a href="#videos">Vídeos</a>
       <a href="#materiais">Materiais</a>
       <a href="#formulas">Resumo de fórmulas</a>
+      <a href="#calculadora">Calculadora SAC x Price</a>
     </nav>
   </div>
 </header>
@@ -180,6 +227,39 @@
     </div>
     <div class="note">
       <strong>Pergunta que resolve muita questão:</strong> o percentual está sendo aplicado sobre qual valor?
+    </div>
+  </section>
+
+  <section id="calculadora">
+    <h2>Calculadora de amortização (SAC x Price)</h2>
+    <p>Informe o capital financiado, a taxa de juros do período e o número de parcelas, escolha o sistema e veja a tabela completa, mês a mês — a mesma lógica usada em sala.</p>
+    <form id="calc-form" class="calc-form">
+      <div class="field">
+        <label for="calc-capital">Capital financiado (R$)</label>
+        <input type="number" id="calc-capital" min="0.01" step="0.01" value="10000" required>
+      </div>
+      <div class="field">
+        <label for="calc-taxa">Taxa de juros do período (%)</label>
+        <input type="number" id="calc-taxa" min="0" step="0.01" value="2" required>
+      </div>
+      <div class="field">
+        <label for="calc-prazo">Número de parcelas</label>
+        <input type="number" id="calc-prazo" min="1" step="1" value="5" required>
+      </div>
+      <div class="field">
+        <label for="calc-sistema">Sistema de amortização</label>
+        <select id="calc-sistema">
+          <option value="ambos" selected>Comparar SAC e Price</option>
+          <option value="sac">Só SAC</option>
+          <option value="price">Só Tabela Price</option>
+        </select>
+      </div>
+      <button type="submit">Calcular</button>
+    </form>
+    <p id="calc-erro" class="calc-erro" hidden></p>
+    <div id="calc-resultado"></div>
+    <div class="note">
+      Use ponto para decimais (ex.: 2.5, não 2,5). A taxa deve estar na mesma unidade de tempo do intervalo entre as parcelas (normalmente, taxa mensal para parcelas mensais). Pequenas diferenças de centavos entre os cálculos manuais e a calculadora podem ocorrer por arredondamento — a última parcela é sempre ajustada para zerar o saldo devedor, como se faz na prática.
     </div>
   </section>
 
@@ -262,6 +342,155 @@
 
     card.append(player, body);
     grid.appendChild(card);
+  });
+</script>
+
+<script>
+  // Calculadora de amortização (SAC x Price).
+  function arredonda(x) { return Math.round((x + Number.EPSILON) * 100) / 100; }
+
+  function formataBRL(x) {
+    return x.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // SAC: amortização constante (capital / n); juros incidem sobre o saldo anterior.
+  // A última parcela sempre zera o saldo devedor (ajuste de arredondamento, como na prática).
+  function calcularSAC(capital, i, n) {
+    var amortConstante = capital / n;
+    var saldo = capital;
+    var linhas = [];
+    for (var k = 1; k <= n; k++) {
+      var saldoIni = arredonda(saldo);
+      var juros = arredonda(saldo * i);
+      var amort = (k < n) ? arredonda(amortConstante) : saldoIni;
+      var prestacao = arredonda(amort + juros);
+      var saldoFim = (k < n) ? arredonda(saldo - amort) : 0;
+      linhas.push({ mes: k, saldoIni: saldoIni, juros: juros, amort: amort, prestacao: prestacao, saldoFim: saldoFim });
+      saldo = saldoFim;
+    }
+    return linhas;
+  }
+
+  // Tabela Price: prestação constante, calculada pelo fator de recuperação de capital.
+  // Com taxa 0%, a fórmula do fator degenera (divisão por zero) — nesse caso a prestação é só capital/n.
+  function calcularPrice(capital, i, n) {
+    var prestacaoFixa;
+    if (i === 0) {
+      prestacaoFixa = capital / n;
+    } else {
+      var fator = (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+      prestacaoFixa = capital * fator;
+    }
+    prestacaoFixa = arredonda(prestacaoFixa);
+
+    var saldo = capital;
+    var linhas = [];
+    for (var k = 1; k <= n; k++) {
+      var saldoIni = arredonda(saldo);
+      var juros = arredonda(saldo * i);
+      var amort, prestacao, saldoFim;
+      if (k < n) {
+        amort = arredonda(prestacaoFixa - juros);
+        prestacao = prestacaoFixa;
+        saldoFim = arredonda(saldo - amort);
+      } else {
+        amort = saldoIni;
+        prestacao = arredonda(amort + juros);
+        saldoFim = 0;
+      }
+      linhas.push({ mes: k, saldoIni: saldoIni, juros: juros, amort: amort, prestacao: prestacao, saldoFim: saldoFim });
+      saldo = saldoFim;
+    }
+    return linhas;
+  }
+
+  function totais(linhas) {
+    var totalJuros = 0, totalPago = 0;
+    linhas.forEach(function (l) { totalJuros += l.juros; totalPago += l.prestacao; });
+    return {
+      primeira: linhas[0].prestacao,
+      ultima: linhas[linhas.length - 1].prestacao,
+      totalJuros: arredonda(totalJuros),
+      totalPago: arredonda(totalPago)
+    };
+  }
+
+  function tabelaHTML(linhas) {
+    var html = '<div class="table-wrap"><table><thead><tr>' +
+      '<th>Mês</th><th>Saldo (início)</th><th>Juros</th><th>Amortização</th><th>Prestação</th><th>Saldo (final)</th>' +
+      '</tr></thead><tbody>';
+    linhas.forEach(function (l) {
+      html += '<tr><td>' + l.mes + '</td>' +
+        '<td>' + formataBRL(l.saldoIni) + '</td>' +
+        '<td>' + formataBRL(l.juros) + '</td>' +
+        '<td>' + formataBRL(l.amort) + '</td>' +
+        '<td>' + formataBRL(l.prestacao) + '</td>' +
+        '<td>' + formataBRL(l.saldoFim) + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    return html;
+  }
+
+  function resumoHTML(t) {
+    return '<div class="resumo">' +
+      '<div class="item"><div class="label">1ª parcela</div><div class="valor">R$ ' + formataBRL(t.primeira) + '</div></div>' +
+      '<div class="item"><div class="label">Última parcela</div><div class="valor">R$ ' + formataBRL(t.ultima) + '</div></div>' +
+      '<div class="item"><div class="label">Total de juros</div><div class="valor">R$ ' + formataBRL(t.totalJuros) + '</div></div>' +
+      '<div class="item"><div class="label">Total pago</div><div class="valor">R$ ' + formataBRL(t.totalPago) + '</div></div>' +
+      '</div>';
+  }
+
+  var calcForm = document.getElementById("calc-form");
+  var calcErro = document.getElementById("calc-erro");
+  var calcResultado = document.getElementById("calc-resultado");
+
+  calcForm.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    calcErro.hidden = true;
+    calcResultado.innerHTML = "";
+
+    var capital = parseFloat(document.getElementById("calc-capital").value);
+    var taxaPct = parseFloat(document.getElementById("calc-taxa").value);
+    var n = parseInt(document.getElementById("calc-prazo").value, 10);
+    var sistema = document.getElementById("calc-sistema").value;
+
+    if (!(capital > 0) || isNaN(taxaPct) || taxaPct < 0 || !(n >= 1)) {
+      calcErro.textContent = "Confira os valores: capital maior que zero, taxa maior ou igual a zero, e número de parcelas de pelo menos 1.";
+      calcErro.hidden = false;
+      return;
+    }
+
+    var i = taxaPct / 100;
+    var saida = "";
+
+    if (sistema === "sac" || sistema === "ambos") {
+      var linhasSAC = calcularSAC(capital, i, n);
+      var tSAC = totais(linhasSAC);
+      saida += '<div class="resultado-bloco"><h3>SAC — Sistema de Amortização Constante</h3>' +
+        resumoHTML(tSAC) + tabelaHTML(linhasSAC) + '</div>';
+    }
+
+    if (sistema === "price" || sistema === "ambos") {
+      var linhasPrice = calcularPrice(capital, i, n);
+      var tPrice = totais(linhasPrice);
+      saida += '<div class="resultado-bloco"><h3>Tabela Price</h3>' +
+        resumoHTML(tPrice) + tabelaHTML(linhasPrice) + '</div>';
+    }
+
+    if (sistema === "ambos") {
+      var tSAC2 = totais(calcularSAC(capital, i, n));
+      var tPrice2 = totais(calcularPrice(capital, i, n));
+      saida += '<div class="resultado-bloco"><h3>SAC x Price — comparação</h3>' +
+        '<div class="table-wrap"><table><thead><tr><th>Sistema</th><th>1ª parcela</th><th>Última parcela</th>' +
+        '<th>Total de juros</th><th>Total pago</th></tr></thead><tbody>' +
+        '<tr><td>SAC</td><td>' + formataBRL(tSAC2.primeira) + '</td><td>' + formataBRL(tSAC2.ultima) + '</td>' +
+        '<td>' + formataBRL(tSAC2.totalJuros) + '</td><td>' + formataBRL(tSAC2.totalPago) + '</td></tr>' +
+        '<tr><td>Price</td><td>' + formataBRL(tPrice2.primeira) + '</td><td>' + formataBRL(tPrice2.ultima) + '</td>' +
+        '<td>' + formataBRL(tPrice2.totalJuros) + '</td><td>' + formataBRL(tPrice2.totalPago) + '</td></tr>' +
+        '</tbody></table></div></div>';
+    }
+
+    calcResultado.innerHTML = saida;
   });
 </script>
 
