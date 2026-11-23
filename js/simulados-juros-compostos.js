@@ -55,8 +55,10 @@ var QUESTOES_JUROS_COMPOSTOS = [
   { enunciado: "Um capital de R$ 2.000 cresceu para R$ 3.000 em 5 meses, a juros compostos. A <strong>taxa mensal</strong> dessa aplicação foi de:<br>" +
       "(A) 8,45% a.m. &nbsp; (B) 10,00% a.m. &nbsp; (C) 108,45% a.m. &nbsp; (D) 50,00% a.m. &nbsp; (E) 30,00% a.m.",
     dicas: [
-      "Aqui o prazo n já é conhecido e a taxa i é a incógnita na base da potência — isso pede uma raiz, não logaritmo.",
-      "i = (M/C)^(1/n) − 1. Substitua M=3000, C=2000, n=5."
+      "Parta da fórmula do montante composto: M = C(1+i)ⁿ.",
+      "Substitua M e C pelos valores do enunciado e isole a potência: (1+i)⁵ = M/C = 3000/2000 = 1,5.",
+      "Aqui o prazo n já é conhecido e a incógnita i está na base da potência — isso pede uma raiz, não logaritmo.",
+      "Tire a raiz 5ª dos dois lados: i = (M/C)^(1/n) − 1 = 1,5^(1/5) − 1."
     ],
     resposta: "(A) 8,45% a.m.",
     resolucao: "i = (M/C)^(1/n) − 1 = (3000/2000)^(1/5) − 1 ≈ 0,0845. (B) divide o crescimento total (50%) por n, errado em regime composto; (C) esquece de subtrair 1; (D) é só o crescimento total, sem dividir pelo prazo." },
@@ -64,8 +66,10 @@ var QUESTOES_JUROS_COMPOSTOS = [
   { enunciado: "Um capital de R$ 6.000 cresceu para R$ 9.000 em 4 meses, a juros compostos. A <strong>taxa mensal</strong> dessa aplicação foi de:<br>" +
       "(A) 10,67% a.m. &nbsp; (B) 12,50% a.m. &nbsp; (C) 110,67% a.m. &nbsp; (D) 50,00% a.m. &nbsp; (E) 25,00% a.m.",
     dicas: [
-      "A incógnita está na base — use raiz, não logaritmo.",
-      "i = (9000/6000)^(1/4) − 1."
+      "Parta da fórmula do montante composto: M = C(1+i)ⁿ.",
+      "Substitua M e C e isole a potência: (1+i)⁴ = M/C = 9000/6000 = 1,5.",
+      "A incógnita i está na base, com n=4 já conhecido — isso pede raiz, não logaritmo.",
+      "i = (M/C)^(1/n) − 1 = 1,5^(1/4) − 1."
     ],
     resposta: "(A) 10,67% a.m.",
     resolucao: "i = (9000/6000)^(1/4) − 1 ≈ 0,1067. (B) divide o crescimento total (50%) por n; (C) esquece de subtrair 1." },
@@ -74,8 +78,10 @@ var QUESTOES_JUROS_COMPOSTOS = [
   { enunciado: "Um capital de R$ 1.000, a juros compostos de 2% a.m., dobra em aproximadamente:<br>" +
       "(A) 2 meses &nbsp; (B) 17,5 meses &nbsp; (C) 35 meses &nbsp; (D) 50 meses &nbsp; (E) 70 meses",
     dicas: [
-      "Aqui a taxa i já é conhecida e o prazo n é a incógnita no expoente — isso pede logaritmo.",
-      "n = log(M/C) / log(1+i), com M/C = 2 (dobrar) e i = 0,02."
+      "Parta da fórmula do montante composto: M = C(1+i)ⁿ.",
+      "Substitua i e isole a potência: (1,02)ⁿ = M/C = 2 (já que o capital dobra).",
+      "Agora a incógnita n está no expoente, com a base (1+i) já conhecida — raiz não ajuda aqui. Aplique logaritmo dos dois lados: log[(1,02)ⁿ] = log(2).",
+      "Use log(aⁿ) = n·log(a) para trazer o n pra baixo: n·log(1,02) = log(2) ⇒ n = log(2)/log(1,02)."
     ],
     resposta: "(C) 35 meses",
     resolucao: "n = log(2)/log(1,02) ≈ 35. (D) divide 100%/2% de forma linear, que só valeria em juros simples." },
@@ -83,8 +89,10 @@ var QUESTOES_JUROS_COMPOSTOS = [
   { enunciado: "Um capital de R$ 1.000, a juros compostos de 2,5% a.m., triplica em aproximadamente:<br>" +
       "(A) 3 meses &nbsp; (B) 22,25 meses &nbsp; (C) 44,5 meses &nbsp; (D) 66,75 meses &nbsp; (E) 80 meses",
     dicas: [
-      "A incógnita está no expoente — use logaritmo.",
-      "n = log(3) / log(1,025), já que triplicar significa M/C = 3."
+      "Parta da fórmula do montante composto: M = C(1+i)ⁿ.",
+      "Substitua i e isole a potência: (1,025)ⁿ = M/C = 3 (já que o capital triplica).",
+      "A incógnita n está no expoente — raiz não resolve aqui. Aplique logaritmo dos dois lados: log[(1,025)ⁿ] = log(3).",
+      "n·log(1,025) = log(3) ⇒ n = log(3)/log(1,025)."
     ],
     resposta: "(C) 44,5 meses",
     resolucao: "n = log(3)/log(1,025) ≈ 44,5. (E) divide 200%/2,5% de forma linear, que só valeria em juros simples." },
@@ -128,8 +136,10 @@ var QUESTOES_JUROS_COMPOSTOS = [
       "(a) Qual a taxa mensal composta dessa aplicação?<br>" +
       "(b) Mantendo essa taxa, em quantos meses esse mesmo capital dobraria?",
     dicas: [
-      "Para (a), a incógnita é a taxa (está na base) — use raiz.",
-      "Para (b), use a taxa que você achou em (a) e aplique logaritmo, já que agora o prazo é a incógnita (M/C = 2)."
+      "Para (a): parta de M = C(1+i)ⁿ e isole a potência: (1+i)⁶ = 4500/3000 = 1,5.",
+      "A incógnita é a taxa i, que está na base, com n=6 já conhecido — isso pede raiz: i = 1,5^(1/6) − 1.",
+      "Para (b): o capital dobra quando (1+i)ⁿ = M/C = 2 — de novo parta da mesma fórmula, mas agora n é a incógnita, no expoente.",
+      "Use logaritmo: n = log(2) / log(1+i), com o i que você achou em (a)."
     ],
     resposta: "(a) i ≈ 6,99% a.m.; (b) n ≈ 10,26 meses",
     resolucao: "(a) i = (4500/3000)^(1/6) − 1 ≈ 0,0699. (b) n = log(2)/log(1,0699) ≈ 10,26." },
