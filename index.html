@@ -487,12 +487,13 @@
         <p class="lead">Gere uma lista de questões pra praticar, com gabarito e resolução — bom pra treinar antes da prova sem precisar abrir a lista de exercícios inteira.</p>
       </div>
     </div>
-    <p>Por enquanto, só o tema <strong>Juros Simples</strong> (Unidade I) está disponível — mais temas em breve.</p>
+    <p>Escolha o tema e a quantidade de questões — mais temas chegam aos poucos.</p>
     <form id="sim-form" class="calc-form">
       <div class="field">
         <label for="sim-tema">Tema</label>
         <select id="sim-tema">
           <option value="juros-simples" selected>Juros Simples</option>
+          <option value="juros-compostos">Juros Compostos</option>
         </select>
       </div>
       <div class="field">
@@ -500,7 +501,7 @@
         <select id="sim-qtd">
           <option value="5">5</option>
           <option value="10" selected>10</option>
-          <option value="18">Todas (18)</option>
+          <option value="all">Todas</option>
         </select>
       </div>
       <button type="submit">Gerar simulado</button>
@@ -765,7 +766,13 @@
 </script>
 
 <script src="js/simulados-juros-simples.js"></script>
+<script src="js/simulados-juros-compostos.js"></script>
 <script>
+  var BANCOS_SIMULADO = {
+    "juros-simples": QUESTOES_JUROS_SIMPLES,
+    "juros-compostos": QUESTOES_JUROS_COMPOSTOS
+  };
+
   function sortearQuestoes(banco, qtd) {
     var copia = banco.slice();
     for (var i = copia.length - 1; i > 0; i--) {
@@ -780,8 +787,11 @@
 
   simForm.addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var qtd = parseInt(document.getElementById("sim-qtd").value, 10);
-    var escolhidas = sortearQuestoes(QUESTOES_JUROS_SIMPLES, qtd);
+    var tema = document.getElementById("sim-tema").value;
+    var banco = BANCOS_SIMULADO[tema] || [];
+    var qtdValor = document.getElementById("sim-qtd").value;
+    var qtd = (qtdValor === "all") ? banco.length : parseInt(qtdValor, 10);
+    var escolhidas = sortearQuestoes(banco, qtd);
 
     var html = '<button type="button" class="sim-toggle" id="sim-toggle-gabarito">Mostrar gabarito</button>' +
       '<ol class="sim-lista">';
