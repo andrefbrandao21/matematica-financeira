@@ -280,10 +280,19 @@
   .sim-lista { list-style: none; padding: 0; margin: 20px 0; display: grid; gap: 14px; }
   .sim-questao { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
   .sim-questao .num { font-weight: 700; color: var(--accent); margin-right: 6px; }
-  .sim-gabarito { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); color: var(--muted); display: none; }
-  .sim-gabarito.ativo { display: block; }
+  .sim-passos { margin: 10px 0; }
+  .sim-dica {
+    margin: 0 0 8px;
+    padding: 8px 12px;
+    background: var(--gold-soft);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    color: var(--text);
+  }
+  .sim-dica strong { color: var(--accent); }
+  .sim-gabarito { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); color: var(--muted); }
   .sim-gabarito strong { color: var(--text); }
-  .sim-toggle {
+  .sim-dica-btn {
     padding: 8px 18px;
     border: 1px solid var(--accent);
     border-radius: 6px;
@@ -291,9 +300,9 @@
     color: var(--accent);
     font-weight: 700;
     cursor: pointer;
-    margin-bottom: 4px;
+    margin-top: 4px;
   }
-  .sim-toggle:hover { background: var(--accent-soft); }
+  .sim-dica-btn:hover { background: var(--accent-soft); }
   .resultado-bloco h3 { margin: 0 0 4px; font-size: 1.15rem; }
 </style>
 </head>
@@ -785,6 +794,58 @@
   var simForm = document.getElementById("sim-form");
   var simResultado = document.getElementById("sim-resultado");
 
+  // Monta uma questão com dicas reveladas uma de cada vez, até a resposta completa.
+  function montaQuestaoComDicas(q, numero) {
+    var dicas = q.dicas || [];
+    var totalPassos = dicas.length + 1; // último passo = resposta/resolução
+
+    var li = document.createElement("li");
+    li.className = "sim-questao";
+
+    var num = document.createElement("span");
+    num.className = "num";
+    num.textContent = numero + ".";
+    li.appendChild(num);
+
+    var enunciado = document.createElement("span");
+    enunciado.innerHTML = q.enunciado;
+    li.appendChild(enunciado);
+
+    var passosDiv = document.createElement("div");
+    passosDiv.className = "sim-passos";
+    li.appendChild(passosDiv);
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "sim-dica-btn";
+    var passo = 0;
+    btn.textContent = dicas.length
+      ? "Ver próxima dica (passo 1 de " + totalPassos + ")"
+      : "Mostrar resposta";
+    li.appendChild(btn);
+
+    btn.addEventListener("click", function () {
+      if (passo < dicas.length) {
+        var p = document.createElement("p");
+        p.className = "sim-dica";
+        p.innerHTML = "<strong>Dica " + (passo + 1) + ":</strong> " + dicas[passo];
+        passosDiv.appendChild(p);
+        passo++;
+        btn.textContent = (passo < dicas.length)
+          ? "Ver próxima dica (passo " + (passo + 1) + " de " + totalPassos + ")"
+          : "Mostrar resposta";
+      } else {
+        var r = document.createElement("div");
+        r.className = "sim-gabarito ativo";
+        r.innerHTML = "<strong>Resposta:</strong> " + q.resposta + "<br><strong>Resolução:</strong> " + q.resolucao;
+        passosDiv.appendChild(r);
+        btn.remove();
+      }
+    });
+
+    return li;
+  }
+
   simForm.addEventListener("submit", function (ev) {
     ev.preventDefault();
     var tema = document.getElementById("sim-tema").value;
@@ -793,22 +854,14 @@
     var qtd = (qtdValor === "all") ? banco.length : parseInt(qtdValor, 10);
     var escolhidas = sortearQuestoes(banco, qtd);
 
-    var html = '<button type="button" class="sim-toggle" id="sim-toggle-gabarito">Mostrar gabarito</button>' +
-      '<ol class="sim-lista">';
+    var lista = document.createElement("ol");
+    lista.className = "sim-lista";
     escolhidas.forEach(function (q, idx) {
-      html += '<li class="sim-questao">' +
-        '<span class="num">' + (idx + 1) + '.</span>' + q.enunciado +
-        '<div class="sim-gabarito"><strong>Resposta:</strong> ' + q.resposta + '<br><strong>Resolução:</strong> ' + q.resolucao + '</div>' +
-        '</li>';
+      lista.appendChild(montaQuestaoComDicas(q, idx + 1));
     });
-    html += '</ol>';
-    simResultado.innerHTML = html;
 
-    document.getElementById("sim-toggle-gabarito").addEventListener("click", function () {
-      var mostrando = this.textContent === "Ocultar gabarito";
-      document.querySelectorAll(".sim-gabarito").forEach(function (g) { g.classList.toggle("ativo", !mostrando); });
-      this.textContent = mostrando ? "Mostrar gabarito" : "Ocultar gabarito";
-    });
+    simResultado.innerHTML = "";
+    simResultado.appendChild(lista);
   });
 </script>
 
